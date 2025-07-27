@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja Gamer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  <script>
+    let carrinho = [];
+    function adicionarAoCarrinho(nome, preco) {
+      carrinho.push({ nome, preco });
+      alert(`${nome} adicionado ao carrinho!`);
+      atualizarCarrinho();
+    }
+    function atualizarCarrinho() {
+      const lista = document.getElementById('carrinho-lista');
+      lista.innerHTML = '';
+      let total = 0;
+      carrinho.forEach((item) => {
+        total += item.preco;
+        const li = document.createElement('li');
+        li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
+        lista.appendChild(li);
+      });
+      document.getElementById('total-carrinho').textContent = `Total: R$ ${total.toFixed(2)}`;
+    }
+    function login() {
+      const usuario = prompt("Digite seu nome de usuário:");
+      const senha = prompt("Digite sua senha:");
+      if (usuario && senha) {
+        alert("Login bem-sucedido como " + usuario);
+      } else {
+        alert("Login cancelado ou inválido.");
+      }
+    }
+
+    async function finalizarCompra() {
+      if (carrinho.length === 0) {
+        alert("Seu carrinho está vazio.");
+        return;
+      }
+
+      const valorTotal = carrinho.reduce((total, item) => total + item.preco, 0).toFixed(2);
+
+      // Aqui normalmente enviaríamos para o backend para criar a preferência do MercadoPago
+      alert("Redirecionando para pagamento via MercadoPago...\nValor total: R$ " + valorTotal);
+
+      // Simulação do redirecionamento
+      window.open("https://www.mercadopago.com.br", "_blank");
+    }
+  </script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+
+  <!-- Header -->
+  <header class="bg-gray-800 p-4 shadow-md">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-yellow-400">Loja Gamer</h1>
+      <nav class="space-x-4">
+        <a href="#" class="hover:text-yellow-300">Início</a>
+        <a href="#produtos" class="hover:text-yellow-300">Produtos</a>
+        <a href="#vantagens" class="hover:text-yellow-300">Vantagens</a>
+        <a href="#contato" class="hover:text-yellow-300">Contato</a>
+        <button onclick="login()" class="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-300">Login</button>
+        <button onclick="document.getElementById('modal-carrinho').classList.remove('hidden')" class="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-300">Carrinho</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="bg-cover bg-center h-96 flex items-center justify-center" style="background-image: url('https://ggmax.com.br/_next/image?url=%2Fimages%2Fhome-banner.jpg&w=1200&q=75');">
+    <div class="bg-black bg-opacity-60 p-6 rounded-xl text-center">
+      <h2 class="text-4xl font-bold mb-4">Compre contas com milhares de cristais!</h2>
+      <p class="mb-6">As melhores contas de jogos com preços incríveis.</p>
+      <a href="#produtos" class="bg-yellow-400 text-black px-6 py-3 rounded-xl font-bold hover:bg-yellow-300 transition">Ver Produtos</a>
+    </div>
+  </section>
+
+  <!-- Produtos -->
+  <section id="produtos" class="py-16 bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4">
+      <h3 class="text-3xl font-bold mb-8 text-center text-yellow-400">Nossos Produtos</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div class="bg-gray-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+          <img src="https://via.placeholder.com/300x200" alt="Produto" class="rounded mb-4">
+          <h4 class="text-xl font-bold">Conta Genshin 60k Gemas</h4>
+          <p class="text-yellow-300 mt-2">49.90</p>
+          <button onclick="adicionarAoCarrinho('Conta Genshin 60k Gemas', 49.90)" class="mt-4 w-full bg-yellow-400 text-black py-2 rounded hover:bg-yellow-300">Comprar</button>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+          <img src="https://via.placeholder.com/300x200" alt="Produto" class="rounded mb-4">
+          <h4 class="text-xl font-bold">Conta DB Legends 20k Cristais</h4>
+          <p class="text-yellow-300 mt-2">59.90</p>
+          <button onclick="adicionarAoCarrinho('Conta DB Legends 20k Cristais', 59.90)" class="mt-4 w-full bg-yellow-400 text-black py-2 rounded hover:bg-yellow-300">Comprar</button>
+        </div>
+        <div class="bg-gray-800 p-4 rounded-lg shadow hover:shadow-xl transition">
+          <img src="https://via.placeholder.com/300x200" alt="Produto" class="rounded mb-4">
+          <h4 class="text-xl font-bold">Conta Honkai Star Rail</h4>
+          <p class="text-yellow-300 mt-2">39.90</p>
+          <button onclick="adicionarAoCarrinho('Conta Honkai Star Rail', 39.90)" class="mt-4 w-full bg-yellow-400 text-black py-2 rounded hover:bg-yellow-300">Comprar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vantagens -->
+  <section id="vantagens" class="bg-gray-800 py-16">
+    <div class="max-w-5xl mx-auto px-4 text-center">
+      <h3 class="text-3xl font-bold text-yellow-400 mb-8">Por que comprar conosco?</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div>
+          <h4 class="text-xl font-bold mb-2">Entrega Rápida</h4>
+          <p>Receba sua conta em minutos após a compra.</p>
+        </div>
+        <div>
+          <h4 class="text-xl font-bold mb-2">Segurança</h4>
+          <p>Contas 100% seguras e verificadas.</p>
+        </div>
+        <div>
+          <h4 class="text-xl font-bold mb-2">Suporte 24/7</h4>
+          <p>Atendimento disponível a qualquer hora.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Carrinho -->
+  <div id="modal-carrinho" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+    <div class="bg-white text-black w-96 p-6 rounded shadow-lg">
+      <h2 class="text-xl font-bold mb-4">Carrinho de Compras</h2>
+      <ul id="carrinho-lista" class="mb-4 space-y-2 text-sm"></ul>
+      <p id="total-carrinho" class="mb-4 font-bold"></p>
+      <button onclick="finalizarCompra()" class="bg-green-500 text-white px-4 py-2 rounded mb-2 w-full">Finalizar Compra (MercadoPago)</button>
+      <button onclick="document.getElementById('modal-carrinho').classList.add('hidden')" class="bg-red-500 text-white px-4 py-2 rounded w-full">Fechar</button>
+    </div>
+  </div>
+
+  <!-- Contato / Footer -->
+  <footer id="contato" class="bg-gray-900 py-8">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="text-lg">Entre em contato pelo WhatsApp: <a href="https://wa.me/seunumerowhatsapp" class="text-yellow-400">Clique aqui</a></p>
+      <p class="mt-4 text-sm text-gray-400">&copy; 2025 Loja Gamer. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
